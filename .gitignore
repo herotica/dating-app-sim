@@ -6,4 +6,7 @@ yarn-error.log*
 pnpm-debug.log*
 node_modules
 dist
-public
+public/data-local/*
+public/prof-pics/*
+!public/prof-pics/girl.jpg
+!public/prof-pics/girl2.jpg

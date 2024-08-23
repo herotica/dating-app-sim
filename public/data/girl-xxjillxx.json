@@ -1,0 +1,19 @@
+{
+  "username": "Jill",
+  "hasInteractions": true,
+  "firstMessage": "Hey, we matched!, like your picture 😉!",
+  "age": 36,
+  "job": "Bartender",
+  "distance": 6,
+  "profile": {
+    "lookingfor": "long term relationship",
+    "tagline": "Love to travel and meet new people.",
+    "interests": ["flowers", "cats", "vacationing"],
+    "lifestyle": [
+      "Partying",
+      "Gardening",
+      "Travel"
+    ]
+  },
+  "pictures": ["girl.jpg","girl2.jpg","girl.jpg","girl2.jpg"]
+}
