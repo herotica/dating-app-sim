@@ -54,7 +54,6 @@ const usePlayerStore = create(
       },
       updateGirlChat: (girlID, newChats) => {
         set(state => {
-          console.log('>>NEW?', { c: state.chatHistoryKeyed });
           if (!!state.chatHistoryKeyed[girlID]) {
             return {
               chatHistoryKeyed: {
@@ -66,7 +65,6 @@ const usePlayerStore = create(
               }
             };
           } else {
-            console.log('>IS>NEW?');
             return {
               chatHistoryKeyed: {
                 ...state.chatHistoryKeyed,

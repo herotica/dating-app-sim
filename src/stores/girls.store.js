@@ -32,7 +32,7 @@ const useGirlsStore = create((set, get) => ({
   unloadedSwipes: [],
   girlsData: [],
   girlsDataKeyed: {},
-  init: (seenIDs) => {
+  init: seenIDs => {
     if (!get().swipesLoaded) {
       set(() => ({ swipesLoaded: true }));
       fetch('/data/swipes.json').then(async r => {
@@ -40,7 +40,9 @@ const useGirlsStore = create((set, get) => ({
         const checkedSwipes = allSwipes;
         set(() => ({
           allSwipes: checkedSwipes,
-          unloadedSwipes: checkedSwipes.filter(girlID => !seenIDs.includes(girlID))
+          unloadedSwipes: checkedSwipes.filter(
+            girlID => !seenIDs.includes(girlID)
+          )
         }));
 
         for (let index = 0; index < INITIAL_GRAB; index++) {
@@ -57,6 +59,11 @@ const useGirlsStore = create((set, get) => ({
     return await fetch(`/data/girl-${id}.json`)
       .then(async girlDataRes => await girlDataRes.json())
       .catch(() => null);
+  },
+  girlSeen: () => {
+    const girlsData = [...get().girlsData];
+    girlsData.shift();
+    set(s => ({ girlsData }));
   }
 }));
 

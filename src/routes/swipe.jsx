@@ -6,17 +6,16 @@ import { usePlayerStore } from '../stores/player.store';
 import Profile from '../components/profile';
 
 export default function SwipePage() {
-  const [girlIndex, setGirlIndex] = useState(0);
-
   const girlsData = useGirlsStore(s => s.girlsData);
   const getAnotherGirl = useGirlsStore(S => S.getAnotherGirl);
-  const girl = girlsData[girlIndex];
+  const girlSeen = useGirlsStore(S => S.girlSeen);
+  const girl = girlsData[0];
   const matchWithGirl = usePlayerStore(S => S.matchWithGirl);
   const skipGirl = usePlayerStore(S => S.skipGirl);
 
   function next() {
-    setGirlIndex(girlIndex + 1);
     getAnotherGirl();
+    girlSeen();
   }
 
   function match() {

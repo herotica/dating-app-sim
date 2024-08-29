@@ -92,7 +92,6 @@ export default function ChatPage() {
   const playerProfile = {
     name: 'Roger'
   };
-  console.log('>>chatHistoryKeyed?', { c: chatHistoryKeyed });
 
   useEffect(() => {
     if (chats.length === 0 && !!chatHistoryKeyed?.[girlID]?.chats) {

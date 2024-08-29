@@ -17,7 +17,6 @@ export function DateProgress({ girlInfo, playerPoints }) {
       playerPoints >= date.pointsRequired
         ? 100
         : ((playerPoints - lastDatePoints) / difference) * 100;
-    console.log('p', { playerPoints, percentTillComplete });
     jsxArray.push(
       <div
         key={index + date.icon}
