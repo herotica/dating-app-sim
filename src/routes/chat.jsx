@@ -4,8 +4,8 @@ import { useGirlsStore } from '../stores/girls.store';
 import { useEffect, useState } from 'react';
 import { usePlayerStore } from '../stores/player.store';
 
-const CHAT_AVG_DELAY = 500;
-const CHAT_VARIATION = 200;
+const CHAT_AVG_DELAY = 800;
+const CHAT_VARIATION = 400;
 
 const ERROR = {
   start: { chats: [{ type: 'player', data: ['Error getting chat data'] }] }
@@ -53,7 +53,7 @@ function ChatSwitch({ chat, onChoiceClick }) {
             <button
               key={c.text}
               onClick={() => onChoiceClick(c.blockID, c.text)}
-              className="w-max rounded-r-full rounded-tl-full bg-gradient-to-r from-amber-700 to-orange-800 px-4 py-1 text-xs text-white"
+              className="w-auto rounded-r-full rounded-tl-full bg-gradient-to-r from-amber-700 to-orange-800 px-4 py-1 text-left text-xs text-white"
             >
               {c.text}
             </button>
@@ -74,19 +74,24 @@ export default function ChatPage() {
   const getGirlData = useGirlsStore(s => s.getGirlData);
   const chatHistoryKeyed = usePlayerStore(s => s.chatHistoryKeyed);
   const updateGirlChat = usePlayerStore(s => s.updateGirlChat);
+  const updateGirlChats = usePlayerStore(s => s.updateGirlChats);
 
   useEffect(() => {
-    console.log('girlID', girlID);
+    if (chats.length === 0 && !!chatHistoryKeyed?.[girlID]?.chats) {
+      setChats(chatHistoryKeyed[girlID].chats);
+    }
+  }, [chats, girlID]);
 
+  useEffect(() => {
     async function updateGirlInfo() {
       if (girlID && !chatData) {
         fetch(`/data/chat-${girlID}.json`).then(async chatDataRes => {
           const chatDataRaw = await chatDataRes.json();
           setChatData(chatDataRaw);
 
-          if (!!chatDataRaw) {
-            console.log('chatDataRaw', chatDataRaw);
-            updateGirlChat(girlID, chatDataRaw?.start);
+          if (chats.length === 0 && !!chatHistoryKeyed?.[girlID]?.chats) {
+            setChats(chatHistoryKeyed[girlID].chats);
+          } else if (!!chatDataRaw) {
             processChatBlock(chatDataRaw, 'start');
           }
         });
@@ -103,9 +108,37 @@ export default function ChatPage() {
       : chatData[blockID].chats;
 
     if (!!blocks) {
+      // fast update store
+      const newChats = [];
       for (let index = 0; index < blocks.length; index++) {
         const block = blocks[index];
-        console.log('block', block);
+        switch (block.type) {
+          case 'player':
+            for (let indexB = 0; indexB < block.data.length; indexB++) {
+              newChats.push({ type: 'player', text: block.data[indexB] });
+            }
+            break;
+          case 'playerImg':
+            newChats.push({ type: 'playerImg', text: block.data });
+            break;
+          case 'match':
+            for (let indexB = 0; indexB < block.data.length; indexB++) {
+              newChats.push({ type: 'match', text: block.data[indexB] });
+            }
+            break;
+          case 'matchImg':
+            newChats.push({ type: 'matchImg', text: block.data });
+            break;
+          case 'choices':
+            newChats.push({ type: 'choices', text: block.data });
+            break;
+        }
+      }
+      updateGirlChat(girlID, newChats);
+
+      // 'slowly' present data on page to simulate interaction
+      for (let index = 0; index < blocks.length; index++) {
+        const block = blocks[index];
 
         switch (block.type) {
           case 'player':
@@ -158,12 +191,12 @@ export default function ChatPage() {
         ...s.filter((_, i) => i + 1 !== s.length),
         { type: 'player', text }
       ];
+      updateGirlChats(girlID, fresh);
+      processChatBlock(chatData, blockID);
 
       return fresh;
     });
-    processChatBlock(chatData, blockID);
   }
-  console.log('chats', chats);
 
   return (
     <MobileLayout>

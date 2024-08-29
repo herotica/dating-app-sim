@@ -43,7 +43,39 @@ const usePlayerStore = create((set, get) => ({
       }));
     }
   },
-  updateGirlChat: (girlID, chatBlock, lastBlockID) => {}
+  updateGirlChat: (girlID, newChats, unlocks) => {
+    set(state => {
+      if (state.chatHistoryKeyed[girlID]) {
+        return {
+          chatHistoryKeyed: {
+            ...state.chatHistoryKeyed,
+            [girlID]: {
+              chats: [...state.chatHistoryKeyed[girlID].chats, ...newChats],
+              unlocks
+            }
+          }
+        };
+      } else {
+        return {
+          chatHistoryKeyed: {
+            ...state.chatHistoryKeyed,
+            [girlID]: {
+              chats: newChats,
+              unlocks
+            }
+          }
+        };
+      }
+    });
+  },
+  updateGirlChats: (girlID, replaceWith) => {
+    set(s => ({
+      chatHistoryKeyed: {
+        ...s.chatHistoryKeyed,
+        [girlID]: { ...s.chatHistoryKeyed[girlID], chats: replaceWith }
+      }
+    }));
+  }
 }));
 
 export { usePlayerStore };
