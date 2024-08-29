@@ -15,14 +15,16 @@ function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function ChatSwitch({ chat, onChoiceClick }) {
+function ChatSwitch({ chat, onChoiceClick, girlInfo, playerProfile }) {
   // match, player, matchImg, playerImg, choices
   switch (chat.type) {
     case 'match':
       return (
         <div className="flex w-full justify-end pl-8">
           <p className="rounded-l-full rounded-tr-full bg-gradient-to-r from-cyan-700 to-blue-800 px-4 py-1 text-xs text-white">
-            {chat.text}
+            {chat.text
+              .replaceAll('$name', playerProfile.name)
+              .replaceAll('$', girlInfo.matchname)}
           </p>
         </div>
       );
@@ -30,7 +32,9 @@ function ChatSwitch({ chat, onChoiceClick }) {
       return (
         <div className="flex w-full justify-start pr-8">
           <p className="rounded-r-full rounded-tl-full bg-slate-200 px-4 py-1 text-xs text-slate-900">
-            {chat.text}
+            {chat.text
+              .replaceAll('$name', playerProfile.name)
+              .replaceAll('$', girlInfo.matchname)}
           </p>
         </div>
       );
@@ -75,6 +79,9 @@ export default function ChatPage() {
   const chatHistoryKeyed = usePlayerStore(s => s.chatHistoryKeyed);
   const updateGirlChat = usePlayerStore(s => s.updateGirlChat);
   const updateGirlChats = usePlayerStore(s => s.updateGirlChats);
+  const playerProfile = {
+    name: 'Roger'
+  };
 
   useEffect(() => {
     if (chats.length === 0 && !!chatHistoryKeyed?.[girlID]?.chats) {
@@ -235,6 +242,8 @@ export default function ChatPage() {
                   key={c.text}
                   chat={c}
                   onChoiceClick={onChoiceClick}
+                  girlInfo={girlInfo}
+                  playerProfile={playerProfile}
                 />
               ))}
             </div>
