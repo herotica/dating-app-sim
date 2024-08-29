@@ -32,12 +32,23 @@ const router = createBrowserRouter([
 import './index.css';
 import { useGirlsStore } from './stores/girls.store';
 import ViewProfile from './routes/view-profile';
+import { usePlayerStore } from './stores/player.store';
 
 function RootWrap({ children }) {
+  const fillerGirlIDs = usePlayerStore.getState().fillerGirlIDs;
+  const likedInteractionGirlsSkippedIDs =
+    usePlayerStore.getState().likedInteractionGirlsSkippedIDs;
+  const likedInteractionGirlInfo =
+    usePlayerStore.getState().likedInteractionGirlInfo;
+
   const girlStoreInit = useGirlsStore(s => s.init);
 
   useEffect(() => {
-    girlStoreInit();
+    girlStoreInit([
+      ...fillerGirlIDs,
+      ...likedInteractionGirlsSkippedIDs,
+      ...likedInteractionGirlInfo.map(g => g.apiID)
+    ]);
   }, [girlStoreInit]);
 
   return children;
