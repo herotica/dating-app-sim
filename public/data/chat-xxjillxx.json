@@ -2,7 +2,7 @@
   "start": {
     "chats": [
       {
-        "COMMENT": "types: match, player, matchImg, playerImg, choices, unlock",
+        "COMMENT": "types: match, player, matchImg, playerImg, choices, ?unlock?",
         "type": "match",
         "data": [
           "hey we matched!",
@@ -14,7 +14,11 @@
       {
         "type": "choices",
         "data": [
-          { "text": "Your smile! it's lovely $matchname", "blockID": "good" },
+          {
+            "text": "Your smile! it's lovely $matchname",
+            "blockID": "good",
+            "points": 2
+          },
           { "text": "Nothing", "blockID": "bad" }
         ]
       }
@@ -22,8 +26,20 @@
   },
   "good": {
     "chats": [
-      { "type": "match", "data": ["Aww, thanks you!"] },
-      { "type": "unlock", "data": "date1" }
+      {
+        "type": "match",
+        "data": ["Aww, thanks you!", "Yours is pretty nice too"]
+      },
+      {
+        "type": "choices",
+        "data": [
+          {
+            "text": "Fancy meeting me for a coffee?",
+            "blockID": "good-coffee",
+            "points": 1
+          }
+        ]
+      }
     ]
   },
   "bad": {
@@ -50,6 +66,32 @@
           },
           { "text": "Well that was easy", "blockID": "dog-bad" }
         ]
+      }
+    ]
+  },
+  "good-coffee": {
+    "chats": [
+      {
+        "type": "match",
+        "data": ["Sounds great", "What time?"]
+      },
+      {
+        "type": "choices",
+        "data": [
+          {
+            "text": "Does 7 work?",
+            "blockID": "good-coffee-2",
+            "points": 1
+          }
+        ]
+      }
+    ]
+  },
+  "good-coffee-2": {
+    "chats": [
+      {
+        "type": "match",
+        "data": ["It does", "See you then!"]
       }
     ]
   },

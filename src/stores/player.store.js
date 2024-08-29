@@ -12,18 +12,24 @@ const usePlayerStore = create(
       chatHistoryKeyed: {},
       matchWithGirl: girlData => {
         if (girlData.hasInteractions) {
-          set(state => ({
-            likedInteractionGirlInfo: [
-              ...state.likedInteractionGirlInfo,
-              {
-                apiID: girlData.apiID,
-                lastMessage: girlData.firstMessage,
-                messageID: null,
-                username: girlData.username,
-                icon: girlData.pictures[0]
-              }
-            ]
-          }));
+          if (
+            !get().likedInteractionGirlInfo.find(
+              girl => girl.apiID === girlData.apiID
+            )
+          ) {
+            set(state => ({
+              likedInteractionGirlInfo: [
+                ...state.likedInteractionGirlInfo,
+                {
+                  apiID: girlData.apiID,
+                  lastMessage: girlData.firstMessage,
+                  messageID: null,
+                  username: girlData.username,
+                  icon: girlData.pictures[0]
+                }
+              ]
+            }));
+          }
         } else {
           set(state => ({
             fillerMatches: state.fillerMatches + 1,
@@ -46,25 +52,27 @@ const usePlayerStore = create(
           }));
         }
       },
-      updateGirlChat: (girlID, newChats, unlocks) => {
+      updateGirlChat: (girlID, newChats) => {
         set(state => {
-          if (state.chatHistoryKeyed[girlID]) {
+          console.log('>>NEW?', { c: state.chatHistoryKeyed });
+          if (!!state.chatHistoryKeyed[girlID]) {
             return {
               chatHistoryKeyed: {
                 ...state.chatHistoryKeyed,
                 [girlID]: {
-                  chats: [...state.chatHistoryKeyed[girlID].chats, ...newChats],
-                  unlocks
+                  ...state.chatHistoryKeyed[girlID],
+                  chats: [...state.chatHistoryKeyed[girlID].chats, ...newChats]
                 }
               }
             };
           } else {
+            console.log('>IS>NEW?');
             return {
               chatHistoryKeyed: {
                 ...state.chatHistoryKeyed,
                 [girlID]: {
                   chats: newChats,
-                  unlocks
+                  playerPoints: 0
                 }
               }
             };
@@ -75,7 +83,22 @@ const usePlayerStore = create(
         set(s => ({
           chatHistoryKeyed: {
             ...s.chatHistoryKeyed,
-            [girlID]: { ...s.chatHistoryKeyed[girlID], chats: replaceWith }
+            [girlID]: {
+              ...s.chatHistoryKeyed[girlID],
+              chats: replaceWith,
+              lastMessage: 'TODO'
+            }
+          }
+        }));
+      },
+      addPoints: (girlID, newPoints) => {
+        set(s => ({
+          chatHistoryKeyed: {
+            ...s.chatHistoryKeyed,
+            [girlID]: {
+              ...s.chatHistoryKeyed[girlID],
+              playerPoints: s.chatHistoryKeyed[girlID].playerPoints + newPoints
+            }
           }
         }));
       }

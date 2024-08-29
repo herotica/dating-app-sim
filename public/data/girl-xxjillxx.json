@@ -1,5 +1,6 @@
 {
   "username": "Jill",
+  "version": 1,
   "name": "Jill",
   "hasInteractions": true,
   "firstMessage": "Hey, we matched!, like your picture 😉!",
@@ -10,11 +11,19 @@
     "lookingfor": "long term relationship",
     "tagline": "Love to travel and meet new people.",
     "interests": ["flowers", "cats", "vacationing"],
-    "lifestyle": [
-      "Partying",
-      "Gardening",
-      "Travel"
-    ]
+    "lifestyle": ["Partying", "Gardening", "Travel"]
   },
-  "pictures": ["girl.jpg","girl2.jpg","girl.jpg","girl2.jpg"]
+  "dates": [
+    {
+      "unlockKey": "dinner",
+      "pointsRequired": 4,
+      "icon": "🍷"
+    },
+    {
+      "unlockKey": "coffee",
+      "pointsRequired": 2,
+      "icon": "☕"
+    }
+  ],
+  "pictures": ["girl.jpg", "girl2.jpg", "girl.jpg", "girl2.jpg"]
 }

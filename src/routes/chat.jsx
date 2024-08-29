@@ -3,6 +3,7 @@ import { NavLink, useSearchParams } from 'react-router-dom';
 import { useGirlsStore } from '../stores/girls.store';
 import { useEffect, useState } from 'react';
 import { usePlayerStore } from '../stores/player.store';
+import { DateProgress } from '../components/date-progress';
 
 const CHAT_AVG_DELAY = 800;
 const CHAT_VARIATION = 400;
@@ -15,7 +16,9 @@ function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function ChatSwitch({ chat, onChoiceClick, girlInfo, playerProfile }) {
+function ChatSwitch({ chat, onChoiceClick, girlInfo, girlID, playerProfile }) {
+  const addPoints = usePlayerStore(s => s.addPoints);
+
   // match, player, matchImg, playerImg, choices
   switch (chat.type) {
     case 'match':
@@ -24,7 +27,7 @@ function ChatSwitch({ chat, onChoiceClick, girlInfo, playerProfile }) {
           <p className="rounded-l-full rounded-tr-full bg-gradient-to-r from-cyan-700 to-blue-800 px-4 py-1 text-xs text-white">
             {chat.text
               .replaceAll('$name', playerProfile.name)
-              .replaceAll('$', girlInfo.matchname)}
+              .replaceAll('$matchname', girlInfo.name)}
           </p>
         </div>
       );
@@ -34,7 +37,7 @@ function ChatSwitch({ chat, onChoiceClick, girlInfo, playerProfile }) {
           <p className="rounded-r-full rounded-tl-full bg-slate-200 px-4 py-1 text-xs text-slate-900">
             {chat.text
               .replaceAll('$name', playerProfile.name)
-              .replaceAll('$', girlInfo.matchname)}
+              .replaceAll('$matchname', girlInfo.name)}
           </p>
         </div>
       );
@@ -56,10 +59,17 @@ function ChatSwitch({ chat, onChoiceClick, girlInfo, playerProfile }) {
           {chat.text.map(c => (
             <button
               key={c.text}
-              onClick={() => onChoiceClick(c.blockID, c.text)}
+              onClick={() => {
+                if (c.points) {
+                  addPoints(girlID, c.points);
+                }
+                onChoiceClick(c.blockID, c.text);
+              }}
               className="w-auto rounded-r-full rounded-tl-full bg-gradient-to-r from-amber-700 to-orange-800 px-4 py-1 text-left text-xs text-white"
             >
-              {c.text}
+              {c.text
+                .replaceAll('$name', playerProfile.name)
+                .replaceAll('$matchname', girlInfo.name)}
             </button>
           ))}
         </div>
@@ -82,6 +92,7 @@ export default function ChatPage() {
   const playerProfile = {
     name: 'Roger'
   };
+  console.log('>>chatHistoryKeyed?', { c: chatHistoryKeyed });
 
   useEffect(() => {
     if (chats.length === 0 && !!chatHistoryKeyed?.[girlID]?.chats) {
@@ -206,7 +217,7 @@ export default function ChatPage() {
   }
 
   function resetChat() {
-    setChats([])
+    setChats([]);
     updateGirlChats(girlID, []);
     processChatBlock(chatData, 'start');
   }
@@ -225,9 +236,12 @@ export default function ChatPage() {
             💬
           </NavLink>
         </header>
+
         {!!girlInfo && (
-          <div className=" flex h-full max-h-[70vh] flex-1 flex-col gap-2  p-4">
-            <h3 className="text-sm">You matched with {girlInfo.username}</h3>
+          <div className=" flex h-full max-h-[70vh] flex-1 flex-col gap-2 px-4 pb-2">
+            <h3 className="text-sm">
+              You matched with <b>{girlInfo.username}</b>
+            </h3>
 
             <div className="flex justify-between">
               <NavLink
@@ -245,6 +259,15 @@ export default function ChatPage() {
               </button>
             </div>
 
+            {!!girlInfo.dates ? (
+              <DateProgress
+                girlInfo={girlInfo}
+                playerPoints={chatHistoryKeyed[girlID]?.playerPoints ?? 0}
+              />
+            ) : (
+              <> </>
+            )}
+
             <div className="thin-scroll flex flex-col-reverse gap-2 overflow-y-scroll px-2 pt-12 text-slate-800">
               {[...chats].reverse().map(c => (
                 <ChatSwitch
@@ -252,6 +275,7 @@ export default function ChatPage() {
                   chat={c}
                   onChoiceClick={onChoiceClick}
                   girlInfo={girlInfo}
+                  girlID={girlID}
                   playerProfile={playerProfile}
                 />
               ))}
