@@ -4,6 +4,7 @@ const usePlayerStore = create((set, get) => ({
   fillerMatches: 0,
   fillersSkipped: 0,
   fillerGirlIDs: [],
+  likedInteractionGirlsSkippedIDs: [],
   likedInteractionGirlInfo: [],
   chatHistoryKeyed: {},
   matchWithGirl: girlData => {
@@ -28,14 +29,21 @@ const usePlayerStore = create((set, get) => ({
     }
   },
   skipGirl: girlData => {
-    set(state => ({
-      fillersSkipped: state.fillersSkipped + 1,
-      fillerGirlIDs: [...state.fillerGirlIDs, girlData.apiID]
-    }));
+    if (girlData.hasInteractions) {
+      set(state => ({
+        likedInteractionGirlsSkippedIDs: [
+          ...state.likedInteractionGirlsSkippedIDs,
+          girlData.apiID
+        ]
+      }));
+    } else {
+      set(state => ({
+        fillersSkipped: state.fillersSkipped + 1,
+        fillerGirlIDs: [...state.fillerGirlIDs, girlData.apiID]
+      }));
+    }
   },
-  updateGirlChat: (girlID, chatBlock, lastBlockID) => {
-
-  }
+  updateGirlChat: (girlID, chatBlock, lastBlockID) => {}
 }));
 
 export { usePlayerStore };

@@ -6,8 +6,11 @@ export default function MatchesPage() {
   const likedInteractionGirlInfo = usePlayerStore(
     s => s.likedInteractionGirlInfo
   );
-  const missedMatches = usePlayerStore(s => s.missedMatches);
-  console.log('likedInteractionGirlInfo', likedInteractionGirlInfo);
+  const fillerMatches = usePlayerStore(s => s.fillerMatches);
+  const fillersSkipped = usePlayerStore(s => s.fillersSkipped);
+  const likedInteractionGirlsSkippedIDs = usePlayerStore(
+    s => s.likedInteractionGirlsSkippedIDs
+  );
 
   return (
     <MobileLayout>
@@ -40,21 +43,42 @@ export default function MatchesPage() {
 
           <div className="flex flex-col gap-4">
             {likedInteractionGirlInfo.map(matchInfo => (
-              <NavLink to={`/chat?girlID=${matchInfo.apiID}`} key={matchInfo.username} className="mx-4 flex gap-4 items-center">
-                <div className="overflow-hidden rounded-full h-16 w-16">
-                  <img className='w-full h-full object-cover' src={`/prof-pics/${matchInfo.icon}`} />
+              <NavLink
+                to={`/chat?girlID=${matchInfo.apiID}`}
+                key={matchInfo.username}
+                className="mx-4 flex items-center gap-4"
+              >
+                <div className="h-16 w-16 overflow-hidden rounded-full">
+                  <img
+                    className="h-full w-full object-cover"
+                    src={`/prof-pics/${matchInfo.icon}`}
+                  />
                 </div>
-                <div className='flex flex-col items-start gap-1 text-sm'>
-                    <h3>{matchInfo.username}</h3>
-                    <p className='text-xs text-slate-600'>{matchInfo.lastMessage}</p>
+                <div className="flex flex-col items-start gap-1 text-sm">
+                  <h3>{matchInfo.username}</h3>
+                  <p className="text-xs text-slate-600">
+                    {matchInfo.lastMessage}
+                  </p>
                 </div>
               </NavLink>
             ))}
           </div>
 
-          <span className="pl-4 text-xs text-slate-600">
-            {' '}
-            Missed Matches: {missedMatches}
+          <span className="flex flex-wrap gap-2 pl-4 text-xs text-slate-600">
+            <span>
+              <b className="pr-2">Fillers Like</b>
+              {fillerMatches}
+            </span>
+            <span>
+              <b className="pr-2">Fillers Skipped</b>
+              {fillersSkipped}
+            </span>
+            <span>
+              <b className="pr-2">Missed Interactive Matches:</b>
+              {likedInteractionGirlsSkippedIDs?.map(apiID => (
+                <span>{apiID}</span>
+              ))}
+            </span>
           </span>
         </main>
       </div>
