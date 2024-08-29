@@ -205,6 +205,12 @@ export default function ChatPage() {
     });
   }
 
+  function resetChat() {
+    setChats([])
+    updateGirlChats(girlID, []);
+    processChatBlock(chatData, 'start');
+  }
+
   return (
     <MobileLayout>
       <div>
@@ -231,7 +237,10 @@ export default function ChatPage() {
                 View Profile
               </NavLink>
 
-              <button className="w-min whitespace-nowrap rounded-full bg-orange-200 px-2 py-1 text-xs">
+              <button
+                onClick={resetChat}
+                className="w-min whitespace-nowrap rounded-full bg-orange-200 px-2 py-1 text-xs"
+              >
                 Reset Chat
               </button>
             </div>
