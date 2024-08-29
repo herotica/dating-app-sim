@@ -1,6 +1,7 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware'
 
-const usePlayerStore = create((set, get) => ({
+const usePlayerStore = create(persist((set, get) => ({
   fillerMatches: 0,
   fillersSkipped: 0,
   fillerGirlIDs: [],
@@ -23,7 +24,7 @@ const usePlayerStore = create((set, get) => ({
       }));
     } else {
       set(state => ({
-        fillerMatches: state.missedMatches + 1,
+        fillerMatches: state.fillerMatches + 1,
         fillerGirlIDs: [...state.fillerGirlIDs, girlData.apiID]
       }));
     }
@@ -76,6 +77,6 @@ const usePlayerStore = create((set, get) => ({
       }
     }));
   }
-}));
+}), {name: 'player-store'}));
 
 export { usePlayerStore };
