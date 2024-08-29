@@ -22,18 +22,21 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <ProfilePage />
+  },
+  {
+    path: '/view-profile',
+    element: <ViewProfile />
   }
 ]);
 
 import './index.css';
 import { useGirlsStore } from './stores/girls.store';
+import ViewProfile from './routes/view-profile';
 
 function RootWrap({ children }) {
-  console.log('Root');
   const girlStoreInit = useGirlsStore(s => s.init);
 
   useEffect(() => {
-    console.log('UE');
     girlStoreInit();
   }, [girlStoreInit]);
 
@@ -41,9 +44,7 @@ function RootWrap({ children }) {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <RootWrap>
-      <RouterProvider router={router} />
-    </RootWrap>
-  </React.StrictMode>
+  <RootWrap>
+    <RouterProvider router={router} />
+  </RootWrap>
 );

@@ -1,0 +1,45 @@
+{
+  "start": {
+    "chats": [
+      {
+        "COMMENT": "types: match, player, matchImg, playerImg, choices, unlock",
+        "type": "match",
+        "data": [
+          "hey we matched!",
+          "nice to meet you $name",
+          "I'm Jill",
+          "what did you like about my profile?"
+        ]
+      },
+      {
+        "type": "choices",
+        "data": [
+          { "text": "Your smile! it's lovely $matchname", "blockID": "good" },
+          { "text": "Nothing", "blockID": "bad" }
+        ]
+      }
+    ]
+  },
+  "good": {
+    "chats": [
+      { "type": "match", "data": ["Aww, thanks you!"] },
+      { "type": "unlock", "data": "date1" }
+    ]
+  },
+  "bad": {
+    "chats": [
+      { "type": "match", "data": ["What the hell?"] },
+      {
+        "type": "player",
+        "data": [
+          "Sorry, sounded funnier in my head",
+          "Can I cheer you up with a picture of a puppy?"
+        ]
+      },
+      {
+        "type": "playerImg",
+        "data": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/398px-Golde33443.jpg"
+      }
+    ]
+  }
+}

@@ -40,7 +40,7 @@ export default function MatchesPage() {
 
           <div className="flex flex-col gap-4">
             {likedInteractionGirlInfo.map(matchInfo => (
-              <NavLink to={`/chat?id=${matchInfo.apiID}`} key={matchInfo.username} className="mx-4 flex gap-4 items-center">
+              <NavLink to={`/chat?girlID=${matchInfo.apiID}`} key={matchInfo.username} className="mx-4 flex gap-4 items-center">
                 <div className="overflow-hidden rounded-full h-16 w-16">
                   <img className='w-full h-full object-cover' src={`/prof-pics/${matchInfo.icon}`} />
                 </div>

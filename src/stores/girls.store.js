@@ -5,21 +5,25 @@ const INITIAL_GRAB = 2;
 function getGirl(setCall, getCall) {
   const unloadedSwipes = getCall().unloadedSwipes;
 
-  const randomIndex = Math.floor(Math.random() * unloadedSwipes.length);
-  fetch(`/data/girl-${unloadedSwipes[randomIndex]}.json`).then(
-    async girlDataRes => {
-      const girlData = await girlDataRes.json();
-      setCall(state => ({
-        girlsData: [
-          ...state.girlsData,
-          { ...girlData, apiID: unloadedSwipes[randomIndex] }
-        ],
-        unloadedSwipes: state.unloadedSwipes.filter(
-          v => v !== unloadedSwipes[randomIndex]
-        )
-      }));
-    }
-  );
+  if (unloadedSwipes.length > 0) {
+    const randomIndex = Math.floor(Math.random() * unloadedSwipes.length);
+
+    fetch(`/data/girl-${unloadedSwipes[randomIndex]}.json`).then(
+      async girlDataRes => {
+        const girlData = await girlDataRes.json();
+
+        setCall(state => ({
+          girlsData: [
+            ...state.girlsData,
+            { ...girlData, apiID: unloadedSwipes[randomIndex] }
+          ],
+          unloadedSwipes: state.unloadedSwipes.filter(
+            v => v !== unloadedSwipes[randomIndex]
+          )
+        }));
+      }
+    );
+  }
 }
 
 const useGirlsStore = create((set, get) => ({
@@ -41,7 +45,6 @@ const useGirlsStore = create((set, get) => ({
         }));
 
         for (let index = 0; index < INITIAL_GRAB; index++) {
-          console.log('index', index);
           getGirl(set, get);
         }
       });
@@ -52,9 +55,9 @@ const useGirlsStore = create((set, get) => ({
     if (!!get().girlsDataKeyed[id]) {
       return get().girlsDataKeyed[id];
     }
-    return await fetch(`/data/girl-${id}.json`).then(
-      async girlDataRes => await girlDataRes.json()
-    );
+    return await fetch(`/data/girl-${id}.json`)
+      .then(async girlDataRes => await girlDataRes.json())
+      .catch(() => null);
   }
 }));
 

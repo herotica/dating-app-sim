@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
 const usePlayerStore = create((set, get) => ({
-  missedMatches: 0,
+  fillerMatches: 0,
+  fillersSkipped: 0,
   fillerGirlIDs: [],
   likedInteractionGirlInfo: [],
   chatHistoryKeyed: {},
   matchWithGirl: girlData => {
-    console.log('girlData', girlData);
     if (girlData.hasInteractions) {
       set(state => ({
         likedInteractionGirlInfo: [
@@ -22,15 +22,19 @@ const usePlayerStore = create((set, get) => ({
       }));
     } else {
       set(state => ({
-        missedMatches: state.missedMatches + 1,
+        fillerMatches: state.missedMatches + 1,
         fillerGirlIDs: [...state.fillerGirlIDs, girlData.apiID]
       }));
     }
   },
   skipGirl: girlData => {
     set(state => ({
+      fillersSkipped: state.fillersSkipped + 1,
       fillerGirlIDs: [...state.fillerGirlIDs, girlData.apiID]
     }));
+  },
+  updateGirlChat: (girlID, chatBlock, lastBlockID) => {
+
   }
 }));
 
