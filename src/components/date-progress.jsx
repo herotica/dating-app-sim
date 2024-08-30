@@ -26,18 +26,24 @@ export function DateProgress({ girlInfo, playerPoints, girlID }) {
         />
       </div>
     );
+    console.log('>>pr', date.pointsRequired);
     jsxArray.push(
       <div key={date.icon} className={`relative right-1.5 z-10 h-6 w-3`}>
         <div className="h-6 min-w-6 overflow-hidden rounded-full bg-slate-200">
-          <NavLink
-            to={`/date?girlID=${encodeURIComponent(girlID)}&dateID=${
-              date.unlockKey
-            }`}
-            disabled={playerPoints < date.pointsRequired}
-            className="flex h-full w-full items-center justify-center bg-sky-500 p-1 text-xs leading-none disabled:opacity-50"
-          >
-            {date.icon}
-          </NavLink>
+          {playerPoints < date.pointsRequired ? (
+            <div className="flex h-full w-full items-center justify-center bg-sky-500 p-1 text-xs leading-none opacity-50">
+              {date.icon}
+            </div>
+          ) : (
+            <NavLink
+              to={`/date?girlID=${encodeURIComponent(girlID)}&dateID=${
+                date.unlockKey
+              }`}
+              className="flex h-full w-full items-center justify-center bg-sky-500 p-1 text-xs leading-none"
+            >
+              {date.icon}
+            </NavLink>
+          )}
         </div>
       </div>
     );
