@@ -62,10 +62,6 @@ const useGirlsStore = create((set, get) => ({
   },
   getAnotherGirl: () => getGirl(set, get),
   getGirlData: async (source, id) => {
-    console.log('getGirlData', {
-      source,
-      id
-    });
     if (!!get().girlsDataKeyed[id]) {
       return get().girlsDataKeyed[id];
     }

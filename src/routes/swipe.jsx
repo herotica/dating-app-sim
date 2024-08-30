@@ -14,9 +14,14 @@ export default function SwipePage() {
   const matchWithGirl = usePlayerStore(S => S.matchWithGirl);
   const skipGirl = usePlayerStore(S => S.skipGirl);
 
+  const [canInteract, setCanInteract] = useState(true);
+
   function next() {
+    setCanInteract(false);
     getAnotherGirl();
     girlSeen();
+
+    setTimeout(() => setCanInteract(true), 600);
   }
 
   function match() {
@@ -50,13 +55,15 @@ export default function SwipePage() {
             <div className="flex justify-center gap-4 p-4">
               <button
                 onClick={skip}
-                className="rounded-full bg-slate-200 p-1 transition-colors hover:bg-slate-400"
+                disabled={!canInteract}
+                className="rounded-full bg-slate-200 p-1 transition-colors hover:bg-slate-400 disabled:opacity-40"
               >
                 ❌
               </button>
               <button
                 onClick={match}
-                className="rounded-full bg-slate-200 p-1 transition-colors hover:bg-slate-400"
+                disabled={!canInteract}
+                className="rounded-full bg-slate-200 p-1 transition-colors hover:bg-slate-400 disabled:opacity-40"
               >
                 ✔
               </button>

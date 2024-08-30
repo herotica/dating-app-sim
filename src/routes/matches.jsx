@@ -56,9 +56,6 @@ export default function MatchesPage() {
                 key={matchInfo.username}
                 className="mx-4 flex items-center gap-4"
               >
-                {console.log('>>', {
-                  matchInfo
-                })}
                 <div className="h-16 w-16 overflow-hidden rounded-full">
                   <img
                     className="h-full w-full object-cover"
