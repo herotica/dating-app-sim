@@ -1,8 +1,11 @@
 import MobileLayout from '../components/mobile-layout';
 import { NavLink } from 'react-router-dom';
 import { usePlayerStore } from '../stores/player.store';
+import { useState } from 'react';
 
 export default function MatchesPage() {
+  const [search, setSearch] = useState('');
+
   const likedInteractionGirlInfo = usePlayerStore(
     s => s.likedInteractionGirlInfo
   );
@@ -10,6 +13,12 @@ export default function MatchesPage() {
   const fillersSkipped = usePlayerStore(s => s.fillersSkipped);
   const likedInteractionGirlsSkippedIDs = usePlayerStore(
     s => s.likedInteractionGirlsSkippedIDs
+  );
+
+  const filteredMatchesBySearch = likedInteractionGirlInfo.filter(girl =>
+    `${girl.username}${girl.apiID}`
+      .toLocaleLowerCase()
+      .includes(search.toLocaleLowerCase())
   );
 
   return (
@@ -34,6 +43,8 @@ export default function MatchesPage() {
             <input
               className="bg-transparent placeholder:text-slate-800"
               placeholder="Search Matches"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
             />
           </div>
         </header>
@@ -42,7 +53,7 @@ export default function MatchesPage() {
           <h2 className="pl-4 text-red-700">Messages</h2>
 
           <div className="flex flex-col gap-4">
-            {likedInteractionGirlInfo.map(matchInfo => (
+            {filteredMatchesBySearch.map(matchInfo => (
               <NavLink
                 to={`/chat?girlID=${matchInfo.apiID}`}
                 key={matchInfo.username}
