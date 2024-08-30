@@ -7,7 +7,7 @@ export default function Profile({ girl }) {
     <div className="thin-scroll flex-1 flex h-60vh max-h-[calc(60vh-4rem)] flex-col overflow-y-scroll">
       <div className="relative h-[calc(60vh-4rem)] flex-shrink-0">
         <img
-          src={`/prof-pics/${girl.pictures[profPicIndex]}`}
+          src={`/data/prof-pics/${girl.pictures[profPicIndex]}`}
           className="h-full w-full object-cover"
         />
 
