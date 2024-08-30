@@ -1,11 +1,9 @@
-import { useMemo } from 'react';
+import { NavLink } from 'react-router-dom';
 
-export function DateProgress({ girlInfo, playerPoints }) {
+export function DateProgress({ girlInfo, playerPoints, girlID }) {
   const sortedDates = girlInfo.dates.sort(
     (a, b) => a.pointsRequired - b.pointsRequired
   );
-  const total = sortedDates[sortedDates.length - 1].pointsRequired;
-  const percentage = 100 / (total || 1);
 
   let lastDatePoints = 0;
   const jsxArray = [];
@@ -30,13 +28,16 @@ export function DateProgress({ girlInfo, playerPoints }) {
     );
     jsxArray.push(
       <div key={date.icon} className={`relative right-1.5 z-10 h-6 w-3`}>
-        <div className="h-6 min-w-6 bg-slate-200 rounded-full overflow-hidden">
-          <button
+        <div className="h-6 min-w-6 overflow-hidden rounded-full bg-slate-200">
+          <NavLink
+            to={`/date?girlID=${encodeURIComponent(girlID)}&dateID=${
+              date.unlockKey
+            }`}
             disabled={playerPoints < date.pointsRequired}
             className="flex h-full w-full items-center justify-center bg-sky-500 p-1 text-xs leading-none disabled:opacity-50"
           >
             {date.icon}
-          </button>
+          </NavLink>
         </div>
       </div>
     );

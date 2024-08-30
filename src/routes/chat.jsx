@@ -262,6 +262,7 @@ export default function ChatPage() {
               <DateProgress
                 girlInfo={girlInfo}
                 playerPoints={chatHistoryKeyed[girlID]?.playerPoints ?? 0}
+                girlID={girlID}
               />
             ) : (
               <> </>

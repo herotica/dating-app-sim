@@ -8,7 +8,7 @@ import Profile from '../components/profile';
 export default function ViewProfile() {
   const navigate = useNavigate();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [girl, setGirlInfo] = useState(null);
   const girlID = searchParams.get('girlID');
   const getGirlData = useGirlsStore(s => s.getGirlData);

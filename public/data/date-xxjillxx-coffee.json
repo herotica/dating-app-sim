@@ -1,9 +1,20 @@
 {
-    "sections": [
-        {
-            "title": "Meet",
-            "text": "You and Jill meet for Coffee...",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Caf%C3%A9_de_Flore.jpg/640px-Caf%C3%A9_de_Flore.jpg"
-        }
-    ]
+  "sections": [
+    {
+      "title": "Meet",
+      "text": "You and Jill meet for Coffee...",
+      "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Caf%C3%A9_de_Flore.jpg/640px-Caf%C3%A9_de_Flore.jpg"
+    },
+    {
+      "title": "Chat",
+      "text": "You gave a long discussion about Cats",
+      "img": "coffee1.jpg"
+    },
+    {
+      "player": "I have a ginger Tabby named Rob"
+    },
+    {
+      "match": "Aww, mines a black cat with little white socks, hes called Pepper, but I call him Pep"
+    }
+  ]
 }

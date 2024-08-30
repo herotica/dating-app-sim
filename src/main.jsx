@@ -1,10 +1,17 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import { useGirlsStore } from './stores/girls.store';
+import { usePlayerStore } from './stores/player.store';
+
 import SwipePage from './routes/swipe';
 import ProfilePage from './routes/profile';
 import ChatPage from './routes/chat';
 import MatchesPage from './routes/matches';
+import ViewProfile from './routes/view-profile';
+import DatePage from './routes/date';
 
 const router = createBrowserRouter([
   {
@@ -26,13 +33,12 @@ const router = createBrowserRouter([
   {
     path: '/view-profile',
     element: <ViewProfile />
+  },
+  {
+    path: '/date',
+    element: <DatePage />
   }
 ]);
-
-import './index.css';
-import { useGirlsStore } from './stores/girls.store';
-import ViewProfile from './routes/view-profile';
-import { usePlayerStore } from './stores/player.store';
 
 function RootWrap({ children }) {
   const fillerGirlIDs = usePlayerStore.getState().fillerGirlIDs;
