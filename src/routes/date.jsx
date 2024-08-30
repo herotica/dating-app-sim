@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import MobileLayout from '../components/mobile-layout';
 import { useNavigate } from 'react-router-dom';
 import { NavLink, useSearchParams } from 'react-router-dom';
+import Header from '../components/header';
 
 export default function DatePage() {
   const navigate = useNavigate();
@@ -23,22 +24,16 @@ export default function DatePage() {
   return (
     <MobileLayout>
       <div className="flex w-full flex-col gap-4">
-        <header className="flex flex-col gap-2">
-          <div className="flex justify-between p-2">
+        <Header
+          Left={
             <button
               onClick={() => navigate(-1)}
               className="transition-opacity hover:opacity-75"
             >
               ⬅ Back
             </button>
-            <NavLink
-              to={'/matches'}
-              className="transition-opacity hover:opacity-75"
-            >
-              💬
-            </NavLink>
-          </div>
-        </header>
+          }
+        />
 
         <div className="thin-scroll flex max-h-[70vh] flex-col gap-4 overflow-y-scroll p-4 text-xs">
           {dateInfo?.sections.map((section, i) => (

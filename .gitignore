@@ -7,6 +7,3 @@ pnpm-debug.log*
 node_modules
 dist
 public/data-local/*
-public/prof-pics/*
-!public/prof-pics/girl.jpg
-!public/prof-pics/girl2.jpg

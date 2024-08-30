@@ -4,6 +4,7 @@ import { useGirlsStore } from '../stores/girls.store';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Profile from '../components/profile';
+import Header from '../components/header';
 
 export default function ViewProfile() {
   const navigate = useNavigate();
@@ -24,20 +25,17 @@ export default function ViewProfile() {
   return (
     <MobileLayout>
       <div>
-        <header className="flex justify-between p-2">
-          <button
-            onClick={() => navigate(-1)}
-            className="transition-opacity hover:opacity-75"
-          >
-            ⬅ Back
-          </button>
-          <NavLink
-            to={'/matches'}
-            className="transition-opacity hover:opacity-75"
-          >
-            💬
-          </NavLink>
-        </header>
+        <Header
+          Left={
+            <button
+              onClick={() => navigate(-1)}
+              className="transition-opacity hover:opacity-75"
+            >
+              ⬅ Back
+            </button>
+          }
+        />
+
         <main className="max-h-[60vh] flex-1 overflow-hidden">
           {girl && <Profile girl={girl} />}
         </main>

@@ -2,6 +2,7 @@ import MobileLayout from '../components/mobile-layout';
 import { NavLink } from 'react-router-dom';
 import { usePlayerStore } from '../stores/player.store';
 import { useState } from 'react';
+import Header from '../components/header';
 
 export default function MatchesPage() {
   const [search, setSearch] = useState('');
@@ -24,30 +25,16 @@ export default function MatchesPage() {
   return (
     <MobileLayout>
       <div className="flex w-full flex-col gap-4">
-        <header className="flex flex-col gap-2">
-          <div className="flex justify-between p-2">
-            <NavLink to={'/'} className="transition-opacity hover:opacity-75">
-              ❤
-            </NavLink>
+        <Header
+          Right={
             <NavLink
               to={'/profile'}
               className="transition-opacity hover:opacity-75"
             >
               🧔
             </NavLink>
-          </div>
-
-          <div className="mx-4 flex items-center gap-2 rounded-full bg-slate-400 px-2 py-1">
-            <span>🔎</span>
-
-            <input
-              className="bg-transparent placeholder:text-slate-800"
-              placeholder="Search Matches"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
-          </div>
-        </header>
+          }
+        />
 
         <main className="thin-scroll flex h-[60vh] max-h-[60vh] flex-col gap-4 overflow-y-scroll">
           <h2 className="pl-4 text-red-700">Messages</h2>

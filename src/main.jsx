@@ -12,6 +12,7 @@ import ChatPage from './routes/chat';
 import MatchesPage from './routes/matches';
 import ViewProfile from './routes/view-profile';
 import DatePage from './routes/date';
+import HelpPage from './routes/help';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: '/date',
     element: <DatePage />
+  },
+  {
+    path: '/help',
+    element: <HelpPage />
   }
 ]);
 

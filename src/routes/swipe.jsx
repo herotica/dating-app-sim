@@ -4,6 +4,7 @@ import { useGirlsStore } from '../stores/girls.store';
 import { NavLink } from 'react-router-dom';
 import { usePlayerStore } from '../stores/player.store';
 import Profile from '../components/profile';
+import Header from '../components/header';
 
 export default function SwipePage() {
   const girlsData = useGirlsStore(s => s.girlsData);
@@ -31,20 +32,16 @@ export default function SwipePage() {
   return (
     <MobileLayout>
       <div className="flex w-full flex-col">
-        <header className="flex justify-between p-2">
-          <NavLink
-            to={'/profile'}
-            className="transition-opacity hover:opacity-75"
-          >
-            🧔
-          </NavLink>
-          <NavLink
-            to={'/matches'}
-            className="transition-opacity hover:opacity-75"
-          >
-            💬
-          </NavLink>
-        </header>
+        <Header
+          Left={
+            <NavLink
+              to={'/profile'}
+              className="transition-opacity hover:opacity-75"
+            >
+              🧔
+            </NavLink>
+          }
+        />
 
         {girl && (
           <main className="flex max-h-[60vh] flex-1 flex-col overflow-hidden">

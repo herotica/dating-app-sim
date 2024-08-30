@@ -4,6 +4,7 @@ import { useGirlsStore } from '../stores/girls.store';
 import { useEffect, useState } from 'react';
 import { usePlayerStore } from '../stores/player.store';
 import { DateProgress } from '../components/date-progress';
+import Header from '../components/header';
 
 const CHAT_AVG_DELAY = 800;
 const CHAT_VARIATION = 400;
@@ -224,17 +225,7 @@ export default function ChatPage() {
   return (
     <MobileLayout>
       <div>
-        <header className="flex justify-between p-2">
-          <NavLink to={'/'} className="transition-opacity hover:opacity-75">
-            ❤
-          </NavLink>
-          <NavLink
-            to={'/matches'}
-            className="transition-opacity hover:opacity-75"
-          >
-            💬
-          </NavLink>
-        </header>
+        <Header />
 
         {!!girlInfo && (
           <div className=" flex h-full max-h-[70vh] flex-1 flex-col gap-2 px-4 pb-2">
