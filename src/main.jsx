@@ -51,15 +51,19 @@ function RootWrap({ children }) {
     usePlayerStore.getState().likedInteractionGirlsSkippedIDs;
   const likedInteractionGirlInfo =
     usePlayerStore.getState().likedInteractionGirlInfo;
+  const sources = usePlayerStore.getState().sources;
 
   const girlStoreInit = useGirlsStore(s => s.init);
 
   useEffect(() => {
-    girlStoreInit([
-      ...fillerGirlIDs,
-      ...likedInteractionGirlsSkippedIDs,
-      ...likedInteractionGirlInfo.map(g => g.apiID)
-    ]);
+    girlStoreInit(
+      [
+        ...fillerGirlIDs,
+        ...likedInteractionGirlsSkippedIDs,
+        ...likedInteractionGirlInfo.map(g => g.apiID)
+      ],
+      sources
+    );
   }, [girlStoreInit]);
 
   return children;

@@ -1,6 +1,10 @@
 import { NavLink } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 export function DateProgress({ girlInfo, playerPoints, girlID }) {
+  const [searchParams] = useSearchParams();
+  const source = searchParams.get('source');
+
   const sortedDates = girlInfo.dates.sort(
     (a, b) => a.pointsRequired - b.pointsRequired
   );
@@ -26,7 +30,7 @@ export function DateProgress({ girlInfo, playerPoints, girlID }) {
         />
       </div>
     );
-    console.log('>>pr', date.pointsRequired);
+
     jsxArray.push(
       <div key={date.icon} className={`relative right-1.5 z-10 h-6 w-3`}>
         <div className="h-6 min-w-6 overflow-hidden rounded-full bg-slate-200">
@@ -38,7 +42,7 @@ export function DateProgress({ girlInfo, playerPoints, girlID }) {
             <NavLink
               to={`/date?girlID=${encodeURIComponent(girlID)}&dateID=${
                 date.unlockKey
-              }`}
+              }&source=${source}`}
               className="flex h-full w-full items-center justify-center bg-sky-500 p-1 text-xs leading-none"
             >
               {date.icon}

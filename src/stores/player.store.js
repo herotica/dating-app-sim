@@ -1,6 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+const SOURCES = import.meta.env.VITE_NSFW
+  ? ['https://nsfw-date-data.netlify.app', '/data']
+  : ['/data'];
+
 const usePlayerStore = create(
   persist(
     (set, get) => ({
@@ -10,6 +14,7 @@ const usePlayerStore = create(
       likedInteractionGirlsSkippedIDs: [],
       likedInteractionGirlInfo: [],
       chatHistoryKeyed: {},
+      sources: SOURCES,
       matchWithGirl: girlData => {
         if (girlData.hasInteractions) {
           if (
@@ -22,6 +27,7 @@ const usePlayerStore = create(
                 ...state.likedInteractionGirlInfo,
                 {
                   apiID: girlData.apiID,
+                  apiSource: girlData.apiSource,
                   lastMessage: girlData.firstMessage,
                   messageID: null,
                   username: girlData.username,
@@ -99,7 +105,8 @@ const usePlayerStore = create(
             }
           }
         }));
-      }
+      },
+      updatesSources: sources => set({ sources })
     }),
     { name: 'player-store' }
   )

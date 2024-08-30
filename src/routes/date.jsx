@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import MobileLayout from '../components/mobile-layout';
 import { useNavigate } from 'react-router-dom';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Header from '../components/header';
 
 export default function DatePage() {
@@ -11,13 +11,16 @@ export default function DatePage() {
   const [dateInfo, setDateInfo] = useState(null);
   const girlID = searchParams.get('girlID');
   const dateID = searchParams.get('dateID');
+  const source = searchParams.get('source');
 
   useEffect(() => {
     if (!!girlID && !!dateID) {
-      fetch(`/data/date-${girlID}-${dateID}.json`).then(async dateInfoRaw => {
-        const dateInfoJSON = await dateInfoRaw.json();
-        setDateInfo(dateInfoJSON);
-      });
+      fetch(`${source}/date-${girlID}-${dateID}.json`).then(
+        async dateInfoRaw => {
+          const dateInfoJSON = await dateInfoRaw.json();
+          setDateInfo(dateInfoJSON);
+        }
+      );
     }
   }, [girlID, dateID]);
 
@@ -47,7 +50,7 @@ export default function DatePage() {
                   src={
                     section.img.substring(0, 4) === 'http'
                       ? section.img
-                      : `/data/date-pics/${section.img}`
+                      : `${source}/date-pics/${section.img}`
                   }
                 />
               )}

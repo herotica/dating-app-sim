@@ -3,22 +3,23 @@ import { create } from 'zustand';
 const INITIAL_GRAB = 2;
 
 function getGirl(setCall, getCall) {
-  const unloadedSwipes = getCall().unloadedSwipes;
+  const unloadedSwipes = getCall().unloadedSwipesSourced;
 
   if (unloadedSwipes.length > 0) {
     const randomIndex = Math.floor(Math.random() * unloadedSwipes.length);
+    const swipeData = unloadedSwipes[randomIndex];
 
-    fetch(`/data/girl-${unloadedSwipes[randomIndex]}.json`).then(
+    fetch(`${swipeData.source}/girl-${swipeData.swipe}.json`).then(
       async girlDataRes => {
         const girlData = await girlDataRes.json();
 
         setCall(state => ({
           girlsData: [
             ...state.girlsData,
-            { ...girlData, apiID: unloadedSwipes[randomIndex] }
+            { ...girlData, apiID: swipeData.swipe, apiSource: swipeData.source }
           ],
-          unloadedSwipes: state.unloadedSwipes.filter(
-            v => v !== unloadedSwipes[randomIndex]
+          unloadedSwipesSourced: state.unloadedSwipesSourced.filter(
+            v => v.swipe !== swipeData.swipe || v.source !== swipeData.source
           )
         }));
       }
@@ -29,35 +30,50 @@ function getGirl(setCall, getCall) {
 const useGirlsStore = create((set, get) => ({
   swipesLoaded: false,
   allSwipes: [],
-  unloadedSwipes: [],
+  unloadedSwipesSourced: [],
   girlsData: [],
   girlsDataKeyed: {},
-  init: seenIDs => {
+  init: (seenIDs, sources) => {
     if (!get().swipesLoaded) {
       set(() => ({ swipesLoaded: true }));
-      fetch('/data/swipes.json').then(async r => {
-        const allSwipes = await r.json();
-        const checkedSwipes = allSwipes;
-        set(() => ({
-          allSwipes: checkedSwipes,
-          unloadedSwipes: checkedSwipes.filter(
-            girlID => !seenIDs.includes(girlID)
-          )
-        }));
+      sources.forEach(source => {
+        fetch(`${source}/swipes.json`).then(async r => {
+          const allSwipes = await r.json();
 
-        for (let index = 0; index < INITIAL_GRAB; index++) {
-          getGirl(set, get);
-        }
+          set(s => ({
+            allSwipes: [...s.allSwipes, ...allSwipes],
+            unloadedSwipesSourced: [
+              ...s.unloadedSwipesSourced,
+              ...allSwipes
+                .filter(girlID => !seenIDs.includes(girlID))
+                .map(swipe => ({
+                  swipe,
+                  source
+                }))
+            ]
+          }));
+
+          for (let index = 0; index < INITIAL_GRAB; index++) {
+            getGirl(set, get);
+          }
+        });
       });
     }
   },
   getAnotherGirl: () => getGirl(set, get),
-  getGirlData: async id => {
+  getGirlData: async (source, id) => {
+    console.log('getGirlData', {
+      source,
+      id
+    });
     if (!!get().girlsDataKeyed[id]) {
       return get().girlsDataKeyed[id];
     }
-    return await fetch(`/data/girl-${id}.json`)
-      .then(async girlDataRes => await girlDataRes.json())
+    return await fetch(`${source}/girl-${id}.json`)
+      .then(async girlDataRes => {
+        const girl = await girlDataRes.json();
+        return { ...girl, apiID: id, apiSource: source };
+      })
       .catch(() => null);
   },
   girlSeen: () => {

@@ -86,6 +86,7 @@ export default function ChatPage() {
   const [chats, setChats] = useState([]);
   const [chatData, setChatData] = useState(null);
   const girlID = searchParams.get('girlID');
+  const source = searchParams.get('source');
   const getGirlData = useGirlsStore(s => s.getGirlData);
   const chatHistoryKeyed = usePlayerStore(s => s.chatHistoryKeyed);
   const updateGirlChat = usePlayerStore(s => s.updateGirlChat);
@@ -103,22 +104,29 @@ export default function ChatPage() {
   useEffect(() => {
     async function updateGirlInfo() {
       if (girlID && !chatData) {
-        fetch(`/data/chat-${girlID}.json`).then(async chatDataRes => {
-          const chatDataRaw = await chatDataRes.json();
-          setChatData(chatDataRaw);
+        fetch(`${source}/chat-${girlID}.json`)
+          .then(async chatDataRes => {
+            const chatDataRaw = await chatDataRes.json();
+            setChatData(chatDataRaw);
 
-          if (chats.length === 0 && !!chatHistoryKeyed?.[girlID]?.chats) {
-            setChats(chatHistoryKeyed[girlID].chats);
-          } else if (!!chatDataRaw) {
-            processChatBlock(chatDataRaw, 'start');
-          }
-        });
+            if (chats.length === 0 && !!chatHistoryKeyed?.[girlID]?.chats) {
+              setChats(chatHistoryKeyed[girlID].chats);
+            } else if (!!chatDataRaw) {
+              processChatBlock(chatDataRaw, 'start');
+            }
+          })
+          .catch(err => {
+            console.error('Error getting girl');
+            setChats(ERROR.start.chats);
+          });
       }
-      const girlInfoData = await getGirlData(girlID);
-      setGirlInfo(girlInfoData);
+      if (!!girlID && !!source) {
+        const girlInfoData = await getGirlData(source, girlID);
+        setGirlInfo(girlInfoData);
+      }
     }
     updateGirlInfo();
-  }, [girlID]);
+  }, [girlID, source]);
 
   async function processChatBlock(chatDataRaw, blockID) {
     const blocks = !!chatDataRaw
@@ -235,7 +243,9 @@ export default function ChatPage() {
 
             <div className="flex justify-between">
               <NavLink
-                to={`/view-profile?girlID=${girlID}`}
+                to={`/view-profile?girlID=${girlID}&source=${encodeURIComponent(
+                  source
+                )}`}
                 className="w-min whitespace-nowrap rounded-full bg-amber-200 px-2 py-1 text-xs"
               >
                 View Profile

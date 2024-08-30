@@ -35,6 +35,16 @@ export default function MatchesPage() {
             </NavLink>
           }
         />
+        <div className="mx-4 flex items-center gap-2 rounded-full bg-slate-400 px-2 py-1">
+          <span>🔎</span>
+
+          <input
+            className="bg-transparent placeholder:text-slate-800"
+            placeholder="Search Matches"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
 
         <main className="thin-scroll flex h-[60vh] max-h-[60vh] flex-col gap-4 overflow-y-scroll">
           <h2 className="pl-4 text-red-700">Messages</h2>
@@ -42,14 +52,17 @@ export default function MatchesPage() {
           <div className="flex flex-col gap-4">
             {filteredMatchesBySearch.map(matchInfo => (
               <NavLink
-                to={`/chat?girlID=${matchInfo.apiID}`}
+                to={`/chat?girlID=${matchInfo.apiID}&source=${encodeURIComponent(matchInfo.apiSource)}`}
                 key={matchInfo.username}
                 className="mx-4 flex items-center gap-4"
               >
+                {console.log('>>', {
+                  matchInfo
+                })}
                 <div className="h-16 w-16 overflow-hidden rounded-full">
                   <img
                     className="h-full w-full object-cover"
-                    src={`/prof-pics/${matchInfo.icon}`}
+                    src={`${matchInfo.apiSource}/prof-pics/${matchInfo.icon}`}
                   />
                 </div>
                 <div className="flex flex-col items-start gap-1 text-sm">

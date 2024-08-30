@@ -12,15 +12,18 @@ export default function ViewProfile() {
   const [searchParams] = useSearchParams();
   const [girl, setGirlInfo] = useState(null);
   const girlID = searchParams.get('girlID');
+  const source = searchParams.get('source');
   const getGirlData = useGirlsStore(s => s.getGirlData);
 
   useEffect(() => {
     async function updateGirlInfo() {
-      const girlInfoData = await getGirlData(girlID);
-      setGirlInfo(girlInfoData);
+      if(!!source && !!girlID){
+        const girlInfoData = await getGirlData(source, girlID);
+        setGirlInfo(girlInfoData);
+      }
     }
     updateGirlInfo();
-  }, [girlID]);
+  }, [girlID, source]);
 
   return (
     <MobileLayout>
