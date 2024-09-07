@@ -9,8 +9,6 @@ const SOURCES = [
   '/data'
 ].filter(v => !!v);
 
-console.log('SOURCES', SOURCES)
-
 const usePlayerStore = create(
   persist(
     (set, get) => ({

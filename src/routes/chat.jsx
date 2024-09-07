@@ -17,7 +17,7 @@ function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function ChatSwitch({ chat, onChoiceClick, girlInfo, girlID, playerProfile }) {
+function ChatSwitch({ chat, onChoiceClick, girlInfo, girlID, playerProfile, source }) {
   const addPoints = usePlayerStore(s => s.addPoints);
 
   // match, player, matchImg, playerImg, choices
@@ -45,13 +45,27 @@ function ChatSwitch({ chat, onChoiceClick, girlInfo, girlID, playerProfile }) {
     case 'matchImg':
       return (
         <div className="flex w-full justify-end pl-8">
-          <img src={chat.text} className="max-h-44 rounded-lg" />
+          <img
+            src={
+              chat.text.substring(0, 4) === 'http'
+                ? chat.text
+                : `${source}/chat-pics/${chat.text}`
+            }
+            className="max-h-44 rounded-lg"
+          />
         </div>
       );
     case 'playerImg':
       return (
         <div className="flex w-full justify-start pr-8">
-          <img src={chat.text} className="max-h-44 rounded-lg" />
+          <img
+            src={
+              chat.text.substring(0, 4) === 'http'
+                ? chat.text
+                : `${source}/chat-pics/${chat.text}`
+            }
+            className="max-h-44 rounded-lg"
+          />
         </div>
       );
     case 'choices':
@@ -278,6 +292,7 @@ export default function ChatPage() {
                   girlInfo={girlInfo}
                   girlID={girlID}
                   playerProfile={playerProfile}
+                  source={source}
                 />
               ))}
             </div>
