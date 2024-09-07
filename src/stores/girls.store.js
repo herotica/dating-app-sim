@@ -33,31 +33,34 @@ const useGirlsStore = create((set, get) => ({
   unloadedSwipesSourced: [],
   girlsData: [],
   girlsDataKeyed: {},
-  init: (seenIDs, sources) => {
+  init: async (seenIDs, sources) => {
     if (!get().swipesLoaded) {
       set(() => ({ swipesLoaded: true }));
-      sources.forEach(source => {
-        fetch(`${source}/swipes.json`).then(async r => {
-          const allSwipes = await r.json();
 
-          set(s => ({
-            allSwipes: [...s.allSwipes, ...allSwipes],
-            unloadedSwipesSourced: [
-              ...s.unloadedSwipesSourced,
-              ...allSwipes
-                .filter(girlID => !seenIDs.includes(girlID))
-                .map(swipe => ({
-                  swipe,
-                  source
-                }))
-            ]
-          }));
+      await Promise.all(
+        sources.map(async source => {
+          return fetch(`${source}/swipes.json`).then(async r => {
+            const allSwipes = await r.json();
 
-          for (let index = 0; index < INITIAL_GRAB; index++) {
-            getGirl(set, get);
-          }
-        });
-      });
+            set(s => ({
+              allSwipes: [...s.allSwipes, ...allSwipes],
+              unloadedSwipesSourced: [
+                ...s.unloadedSwipesSourced,
+                ...allSwipes
+                  .filter(girlID => !seenIDs.includes(girlID))
+                  .map(swipe => ({
+                    swipe,
+                    source
+                  }))
+              ]
+            }));
+          });
+        })
+      );
+
+      for (let index = 0; index < INITIAL_GRAB; index++) {
+        getGirl(set, get);
+      }
     }
   },
   getAnotherGirl: () => getGirl(set, get),
