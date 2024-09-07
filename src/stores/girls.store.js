@@ -39,22 +39,24 @@ const useGirlsStore = create((set, get) => ({
 
       await Promise.all(
         sources.map(async source => {
-          return fetch(`${source}/swipes.json`).then(async r => {
-            const allSwipes = await r.json();
+          return fetch(`${source}/swipes.json`)
+            .then(async r => {
+              const allSwipes = await r.json();
 
-            set(s => ({
-              allSwipes: [...s.allSwipes, ...allSwipes],
-              unloadedSwipesSourced: [
-                ...s.unloadedSwipesSourced,
-                ...allSwipes
-                  .filter(girlID => !seenIDs.includes(girlID))
-                  .map(swipe => ({
-                    swipe,
-                    source
-                  }))
-              ]
-            }));
-          });
+              set(s => ({
+                allSwipes: [...s.allSwipes, ...allSwipes],
+                unloadedSwipesSourced: [
+                  ...s.unloadedSwipesSourced,
+                  ...allSwipes
+                    .filter(girlID => !seenIDs.includes(girlID))
+                    .map(swipe => ({
+                      swipe,
+                      source
+                    }))
+                ]
+              }));
+            })
+            .catch(e => console.error(e));
         })
       );
 
