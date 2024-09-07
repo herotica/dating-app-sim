@@ -1,9 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-const SOURCES = import.meta.env.VITE_NSFW
-  ? ['https://nsfw-date-data.netlify.app', '/data']
-  : ['/data'];
+const SOURCES = [
+  import.meta.env.VITE_NSFW_URL_1,
+  import.meta.env.VITE_NSFW_URL_2,
+  import.meta.env.VITE_NSFW_URL_3,
+  import.meta.env.VITE_NSFW_URL_4,
+  '/data'
+].filter(v => !!v);
+
+console.log('SOURCES', SOURCES)
 
 const usePlayerStore = create(
   persist(
