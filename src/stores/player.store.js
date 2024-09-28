@@ -52,7 +52,11 @@ const usePlayerStore = create(
           set(state => ({
             likedInteractionGirlsSkippedIDs: [
               ...state.likedInteractionGirlsSkippedIDs,
-              girlData.apiID
+              {
+                id: girlData.apiID,
+                source: girlData.apiSource,
+                name: girlData.name
+              }
             ]
           }));
         } else {
@@ -110,7 +114,14 @@ const usePlayerStore = create(
           }
         }));
       },
-      updatesSources: sources => set({ sources })
+      updatesSources: sources => set({ sources }),
+      removeSkippedGirl: girlArrayIndex =>
+        set(s => ({
+          likedInteractionGirlsSkippedIDs:
+            s.likedInteractionGirlsSkippedIDs.filter(
+              (_, i) => i !== girlArrayIndex
+            )
+        }))
     }),
     { name: 'player-store' }
   )

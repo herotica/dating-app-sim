@@ -52,7 +52,9 @@ export default function MatchesPage() {
           <div className="flex flex-col gap-4">
             {filteredMatchesBySearch.map(matchInfo => (
               <NavLink
-                to={`/chat?girlID=${matchInfo.apiID}&source=${encodeURIComponent(matchInfo.apiSource)}`}
+                to={`/chat?girlID=${
+                  matchInfo.apiID
+                }&source=${encodeURIComponent(matchInfo.apiSource)}`}
                 key={matchInfo.username}
                 className="mx-4 flex items-center gap-4"
               >
@@ -81,13 +83,23 @@ export default function MatchesPage() {
               <b className="pr-2">Fillers Skipped</b>
               {fillersSkipped}
             </span>
-            <span>
-              <b className="pr-2">Missed Interactive Matches:</b>
-              {likedInteractionGirlsSkippedIDs?.map(apiID => (
-                <span>{apiID}</span>
-              ))}
-            </span>
           </span>
+
+          {!!likedInteractionGirlsSkippedIDs && (
+            <div className="flex flex-wrap gap-4 pl-4 text-xs text-slate-600">
+                <b className="pr-2">Missed Interactive Matches:</b> 
+                {likedInteractionGirlsSkippedIDs?.map(skippedGirlInfo => (
+                  <NavLink
+                  className='underline'
+                    to={`/view-profile?girlID=${skippedGirlInfo.id}&source=${encodeURIComponent(
+                      skippedGirlInfo.source
+                    )}`}
+                  >
+                    {skippedGirlInfo.name}
+                  </NavLink>
+                ))}
+            </div>
+          )}
         </main>
       </div>
     </MobileLayout>

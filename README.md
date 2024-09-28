@@ -4,6 +4,13 @@ Simulates a dating app
 
 Once complete should all linking to custom content sources
 
+## Features to add
+
+- lightbox images
+- profile
+- switch profile (? wrong gender warn)
+- custom profile
+
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps.
