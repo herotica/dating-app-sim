@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Profile({ girl, hideDistance = false }) {
   const [profPicIndex, setProfPicIndex] = useState(0);
-  console.log('girl', girl);
+
+  useEffect(() => {
+    setProfPicIndex(0);
+  }, [girl]);
 
   return (
     <div className="thin-scroll h-60vh flex max-h-[calc(60vh-4rem)] flex-1 flex-col overflow-y-scroll">
