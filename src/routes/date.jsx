@@ -3,6 +3,7 @@ import MobileLayout from '../components/mobile-layout';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 import Header from '../components/header';
+import EnlargeableImage from '../components/enlargeable-image';
 
 export default function DatePage() {
   const navigate = useNavigate();
@@ -45,13 +46,10 @@ export default function DatePage() {
                 <h4 className="text-sm font-bold">{section.title}</h4>
               )}
               {!!section?.img && (
-                <img
-                  className="w-full"
-                  src={
-                    section.img.substring(0, 4) === 'http'
-                      ? section.img
-                      : `${source}/date-pics/${section.img}`
-                  }
+                <EnlargeableImage
+                  imageURL={section.img}
+                  source={source}
+                  imageClassname="w-full"
                 />
               )}
               {!!section?.text && (

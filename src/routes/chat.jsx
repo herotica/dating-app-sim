@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { usePlayerStore } from '../stores/player.store';
 import { DateProgress } from '../components/date-progress';
 import Header from '../components/header';
+import EnlargeableImage from '../components/enlargeable-image';
 
 const CHAT_AVG_DELAY = 800;
 const CHAT_VARIATION = 400;
@@ -17,7 +18,14 @@ function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function ChatSwitch({ chat, onChoiceClick, girlInfo, girlID, playerProfile, source }) {
+function ChatSwitch({
+  chat,
+  onChoiceClick,
+  girlInfo,
+  girlID,
+  playerProfile,
+  source
+}) {
   const addPoints = usePlayerStore(s => s.addPoints);
 
   // match, player, matchImg, playerImg, choices
@@ -45,26 +53,18 @@ function ChatSwitch({ chat, onChoiceClick, girlInfo, girlID, playerProfile, sour
     case 'matchImg':
       return (
         <div className="flex w-full justify-end pl-8">
-          <img
-            src={
-              chat.text.substring(0, 4) === 'http'
-                ? chat.text
-                : `${source}/chat-pics/${chat.text}`
-            }
-            className="max-h-44 rounded-lg"
+          <EnlargeableImage
+            imageURL={chat.text}
+            source={source}
           />
         </div>
       );
     case 'playerImg':
       return (
         <div className="flex w-full justify-start pr-8">
-          <img
-            src={
-              chat.text.substring(0, 4) === 'http'
-                ? chat.text
-                : `${source}/chat-pics/${chat.text}`
-            }
-            className="max-h-44 rounded-lg"
+          <EnlargeableImage
+            imageURL={chat.text}
+            source={source}
           />
         </div>
       );

@@ -33,6 +33,7 @@ const useGirlsStore = create((set, get) => ({
   unloadedSwipesSourced: [],
   girlsData: [],
   girlsDataKeyed: {},
+  lightboxImage: null,
   init: async (seenIDs, sources) => {
     if (!get().swipesLoaded) {
       set(() => ({ swipesLoaded: true }));
@@ -81,7 +82,9 @@ const useGirlsStore = create((set, get) => ({
     const girlsData = [...get().girlsData];
     girlsData.shift();
     set(s => ({ girlsData }));
-  }
+  },
+  setLightboxImage: imageURL => set({ lightboxImage: imageURL }),
+  unsetLightboxImage: imageURL => set({ lightboxImage: null })
 }));
 
 export { useGirlsStore };
