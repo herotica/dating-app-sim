@@ -6,7 +6,6 @@ Once complete should all linking to custom content sources
 
 ## Features to add
 
-- profile
 - switch profile (? wrong gender warn)
 - custom profile
 

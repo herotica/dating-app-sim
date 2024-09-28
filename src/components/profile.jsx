@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-export default function Profile({ girl }) {
+export default function Profile({ girl, hideDistance = false }) {
   const [profPicIndex, setProfPicIndex] = useState(0);
+  console.log('girl', girl);
 
   return (
     <div className="thin-scroll h-60vh flex max-h-[calc(60vh-4rem)] flex-1 flex-col overflow-y-scroll">
@@ -32,9 +33,11 @@ export default function Profile({ girl }) {
               <span className="leading-none">{girl.age}</span>
             </div>
             <div className="flex items-end gap-2 text-slate-200">
-              <span className="text-sm leading-none">
-                📍 {girl.distance} Miles away
-              </span>
+              {!hideDistance && (
+                <span className="text-sm leading-none">
+                  📍 {girl.distance} Miles away
+                </span>
+              )}
               <span className="text-sm leading-none">{girl.job}</span>
             </div>
           </div>
