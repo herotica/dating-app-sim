@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useGirlsStore } from '../stores/girls.store';
 
 export default function Profile({ girl, hideDistance = false }) {
   const [profPicIndex, setProfPicIndex] = useState(0);
+  const setLightboxImage = useGirlsStore.getState().setLightboxImage;
 
   useEffect(() => {
     setProfPicIndex(0);
   }, [girl]);
 
+  const imgURL = `${girl.apiSource}/prof-pics/${girl.pictures[profPicIndex]}`;
+
   return (
     <div className="thin-scroll h-60vh flex max-h-[calc(60vh-4rem)] flex-1 flex-col overflow-y-scroll">
       <div className="relative h-[calc(60vh-4rem)] flex-shrink-0">
-        <img
-          src={`${girl.apiSource}/prof-pics/${girl.pictures[profPicIndex]}`}
-          className="h-full w-full object-cover"
-        />
+        <img src={imgURL} className="h-full w-full object-cover" />
 
         <div className="absolute bottom-0 left-0 flex h-full w-full flex-1 flex-col justify-between">
           <div className="sticky flex w-full justify-center gap-3">
@@ -35,13 +36,22 @@ export default function Profile({ girl, hideDistance = false }) {
               </h3>
               <span className="leading-none">{girl.age}</span>
             </div>
-            <div className="flex items-end gap-2 text-slate-200">
-              {!hideDistance && (
-                <span className="text-sm leading-none">
-                  📍 {girl.distance} Miles away
-                </span>
-              )}
-              <span className="text-sm leading-none">{girl.job}</span>
+            <div className="flex w-full justify-between gap-2 text-slate-200">
+              <div className="flex flex-row gap-2">
+                {!hideDistance && (
+                  <span className="text-sm leading-none">
+                    📍 {girl.distance} Miles away
+                  </span>
+                )}
+                <span className="text-sm leading-none">{girl.job}</span>
+              </div>
+
+              <button
+                className="p-0.5 text-sm opacity-40"
+                onClick={() => setLightboxImage(imgURL)}
+              >
+                🔍
+              </button>
             </div>
           </div>
         </div>

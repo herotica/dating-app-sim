@@ -10,11 +10,11 @@ export default function Lightbox({ children }) {
 
       {!!lightboxImage && (
         <div
-          className="absolute bottom-0 left-0 right-0 top-0 p-8 z-50"
+          className="absolute bottom-0 left-0 right-0 top-0 p-8 z-50 max-h-[100vh]"
           onClick={() => unsetLightboxImage()}
         >
           <div
-            className="rounded-2xl relative bg-black/60 p-8"
+            className="rounded-2xl relative bg-black/60 p-8 h-full"
             onClick={e => {
               e.stopPropagation();
             }}
@@ -22,7 +22,7 @@ export default function Lightbox({ children }) {
             <button onClick={() => unsetLightboxImage()} className="absolute right-4 top-4 rounded-full p-4 opacity-40 bg-black">
               ❌
             </button>
-            <img src={lightboxImage} className="h-full w-full object-cover" />
+            <img src={lightboxImage} className="h-full w-full object-contain" />
           </div>
         </div>
       )}
